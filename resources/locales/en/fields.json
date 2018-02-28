@@ -1,0 +1,12 @@
+{
+  "user.id": "ID",
+  "user.username": "Username",
+  "user.nickname": "Nickname",
+  "user.mobile": "Mobile",
+  "user.created_at": "created_at",
+  "user.depart": "Department",
+  "user.avatar": "Avatar",
+  "type.name": "TypeName",
+  "type.id": "TypeId",
+  "type.created_at": "created_at"
+}
