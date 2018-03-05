@@ -21,7 +21,7 @@ const inflect = require('i')()
 Route.get('/', ({ session, response }) => {
     //session.put('username', 'virk')
     if(!session.get('username')){
-      return response.status(403).send({
+      return response.status(401).send({
         message: 'nologin',
         code: -1
       })
@@ -37,9 +37,8 @@ Route.get('/print', ({ session }) => {
 Route.get('/lo', 'UserController.index')
   .middleware(['auth'])
 
-Route.get('/login', 'UserController.login')
+Route.post('admin/api/login', 'Admin/Api/UserController.login')
 Route.get('/logout', 'UserController.logout')
-Route.get('/profile', 'UserController.profile')
 
 Route
   .get('users/:id', 'UserController.show')
@@ -50,13 +49,13 @@ Route
 	const resources = ['posts', 'users', 'types', 'comments', 'settings', 'pages']
 
 	Route.get('/menu', `${prefix}UserController.menu`).as('menu')
-	Route.post('/login', `${prefix}UserController.login`)
 	
 	for (let k in resources) {
 		let resource = resources[k]
 		let className = inflect.classify(resource)
 		Route.get(`/${resource}/grid`, `${prefix}${className}Controller.grid`)
-		Route.get(`/${resource}/form`, `${prefix}${className}Controller.form`)
+    Route.get(`/${resource}/form`, `${prefix}${className}Controller.form`)
+    Route.get(`/${resource}/:id`, `${prefix}${className}Controller.show`)
 		Route.resource(`/${resource}`, `${prefix}${className}Controller`)
 	}
 
@@ -65,4 +64,4 @@ Route
 	Route.resource(`/:resource`, `${prefix}RestController`)
 	
 }).prefix('admin/api')
-//.middleware(['auth'])
+.middleware(['auth'])

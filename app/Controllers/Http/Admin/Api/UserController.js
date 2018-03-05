@@ -12,21 +12,33 @@ class UserController extends RestController {
   get expand() {
     return null
   }
-  async login ({ request, auth, session }) {
-    const { username, password } = request.all()
+  async login ({ request, auth, session, response }) {
+    let { username, password } = request.all()
+    
+    let token = null
+    let user = null
     try {
-      let token = await auth.attempt(username, password)
-      session.put('username', JSON.stringify(token))
-      return token
-
+      
+      user = await auth.validate(username, password, true)
+      token = await  auth.generate(user)
     } catch (e) {
-      return e
+      response.json({
+        // e: e,
+        code: 1,
+        message: 'Username or password is incorrect',
+        result: null
+      })
+      return
     }
+
+    response.json({
+      user: user,
+      token: token
+    })
+    
   }
   show ({ auth, params }) {
-    if (auth.user.id !== Number(params.id)) {
-      return 'You cannot see someone else\'s profile'
-    }
+    
     return auth.user
   }
 
