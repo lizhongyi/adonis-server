@@ -1,7 +1,6 @@
 'use strict'
 
 const Hash = use('Hash')
-
 const UserHook = module.exports = {}
 
 /**

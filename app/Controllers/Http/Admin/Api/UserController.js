@@ -12,18 +12,26 @@ class UserController extends RestController {
   get expand() {
     return null
   }
+
+//   async store({ request, response}){
+//     const User = use('App/Models/User')
+//     const userData = request.only(['username', 'nickname', 'avatar','email','password'])
+
+// // save and get instance back
+//     const user = await User.create(userData)
+
+//     return user
+//   }
   async login ({ request, auth, session, response }) {
     let { username, password } = request.all()
     
     let token = null
     let user = null
     try {
-      
       user = await auth.validate(username, password, true)
       token = await  auth.generate(user)
     } catch (e) {
       response.json({
-        // e: e,
         code: 1,
         message: 'Username or password is incorrect',
         result: null
@@ -94,7 +102,9 @@ class UserController extends RestController {
       fields: {
         username: { label: t('fields.user.username'), required: true},
         nickname: { label: t('fields.user.nickname'), required: true},
-        avatar: {label: t('fields.user.avatar')}
+        avatar: {label: t('fields.user.avatar')},
+        email:  {label: t('fields.user.email')},
+        password:  {label: t('fields.user.password')}
       },
       rules: model.rules,
       messages: model.messages

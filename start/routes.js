@@ -56,7 +56,7 @@ Route
 		Route.get(`/${resource}/grid`, `${prefix}${className}Controller.grid`)
     Route.get(`/${resource}/form`, `${prefix}${className}Controller.form`)
     Route.get(`/${resource}/:id`, `${prefix}${className}Controller.show`)
-		Route.resource(`/${resource}`, `${prefix}${className}Controller`)
+		Route.resource(`/${resource}/:id?`, `${prefix}${className}Controller`)
 	}
 
 	Route.get(`/:resource/grid`, `${prefix}RestController.grid`)

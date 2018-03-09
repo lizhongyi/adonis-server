@@ -29,7 +29,7 @@ module.exports = {
   | Array - An array of allowed methods
   |
   */
-  methods: ['GET', 'PUT', 'POST','OPTIONS'],
+  methods: ['GET', 'PUT', 'POST','DELETE'],
 
   /*
   |--------------------------------------------------------------------------
@@ -47,7 +47,7 @@ module.exports = {
   | Function - Receives the current header and should return one of the above values.
   |
   */
-  headers: false,
+  headers: true,
 
   /*
   |--------------------------------------------------------------------------

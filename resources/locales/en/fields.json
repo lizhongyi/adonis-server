@@ -6,6 +6,8 @@
   "user.created_at": "created_at",
   "user.depart": "Department",
   "user.avatar": "Avatar",
+  "user.email": "email",
+  "user.password": "password",
   "type.name": "TypeName",
   "type.id": "TypeId",
   "type.created_at": "created_at"

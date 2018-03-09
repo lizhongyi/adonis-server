@@ -4,14 +4,12 @@ class User extends Model {
 
   static boot() {
     super.boot()
-    this.addHook('beforeCreate', 'User.encryptPassword')
-    this.addHook('beforeCreate', 'User.generateUsername')
-    this.addHook('beforeCreate', 'User.generateNickname')
-    this.addHook('beforeCreate', 'User.generateAvatar')
-
-    this.addHook('beforeUpdate', 'User.encryptPassword')
-    this.addHook('beforeUpdate', 'User.generateAvatar')
-
+    
+    // this.addHook('beforeCreate', 'User.encryptPassword')
+    // this.addHook('beforeCreate', 'User.generateUsername')
+    // this.addHook('beforeCreate', 'User.generateNickname')
+     this.addHook('beforeCreate', 'User.hashPassword')
+     this.addHook('beforeUpdate', 'User.generateAvatar')
   }
 
   static get hidden () {
@@ -19,13 +17,13 @@ class User extends Model {
   }
 
   get rules() {
-    const id = this.attributes.id
+    // const id = this.attributes.id
     switch (this.scenario) {
       default:
         return {
-          username: `required|unique:users,username,id,${id}`,
-          nickname: `required|unique:users,nickname,id,${id}`,
-          // email: 'required|email|unique:users',
+          // username: `required|unique:users,username,id,${id}`,
+          // nickname: `required|unique:users,nickname,id,${id}`,
+          email: 'required|email|unique:users',
           password: 'required|min:6',
           password_confirmation: 'same:password'
         }
@@ -65,11 +63,11 @@ class User extends Model {
   }
 
   apiTokens() {
-    return this.hasMany('App/Model/Token')
+    return this.hasMany('App/Models/Token')
   }
 
   titles() {
-    return this.belongsToMany('App/Model/Title', 'user_title', 'user_id', 'title_id')
+    return this.belongsToMany('App/Models/Title', 'user_title', 'user_id', 'title_id')
   }
 
 

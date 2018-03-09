@@ -1,7 +1,7 @@
 'use strict'
 
 const inflect = require('i')()
-
+const { validate } = use('Validator')
 // class RestfulController {
 class RestController {
 
@@ -20,7 +20,8 @@ class RestController {
     let sort = request.input('sort', '-id')
     // console.log(where)
     let conditions = []
-  
+    where.deleted_at = null
+    console.log(where)
     let tableName = inflect.pluralize(this.resource)
     for (let k in where) {
       const v = where[k]
@@ -30,6 +31,11 @@ class RestController {
       if (typeof v === 'string') {
         query.where(tableName + '.' + k, 'like', `%${v}%`)
       }
+      
+      if ( v == null) {
+        query.where(tableName + '.' + k, 'is', null)
+      }
+
       console.log(k, v)
     }
     
@@ -79,29 +85,34 @@ class RestController {
     response.json(this.restOk(result))
   }
 
-  async validate(model, scenario) {
+  async validate(model, scenario,response) {
     //set different rules and messages for different `scenario`, such as 'create', 'update', 'changePassword' ...
     //see `get rules()` and `get messages()` in Model files
     model.scenario = scenario
-    let messages = Object.assign(t('validation'), model.messages)
-    const valid = await Validator.validate(model.attributes, model.rules, messages)
+    let messages = model.messages
+    const valid = await validate(model.attributes, model.rules, messages)
     if (valid.fails()) {
       response.status(422).json(valid.messages())
     }
   }
 
-  async save({model, request, response}) {
+  async save(model, request, response) {
     let data = request.all()
     let form
       //fill fields defined in `this.formData()` only
     if (form = await this.formData()) {
-      data = request.only(Object.keys(form.fields))
+      data = request.only(Object.keys(form.result.fields))
     }
     model.fill(data)
-    await this.validate(model)
-    delete model.attributes.scenario
+    const { validate } = use('Validator')
+    const validation = await validate(data, model.rules)
+
+    if (validation.fails()) {
+      return validation.messages()
+    }
     const result = await model.save()
-    response.json(model)
+    console.log(result)
+    response.json(this.restOk(true, 0, `created ${model.id}!`))
   }
 
   // update - PATCH /api/:resource/:id
@@ -113,9 +124,16 @@ class RestController {
   // delete - DELETE /api/:resource/:id
   async destroy({request, response}) {
     const model = this.model
-    const record = await model.find(request.param('id'))
-    const result = await record.delete()
-    response.json(result)
+    console.log(request.params.id)
+    const record = await model.find(request.params.id)
+    // const result = await record.delete()
+    const result = await model
+      .query()
+      .where('id', request.params.id)
+      .update({ deleted_at: '2018-02-04 12:14:24' })
+    if(result) {
+      response.json(this.restOk(true,0,'this resoure id=' + request.params.id + ' is  deleted!'))
+    }
   }
 
   async grid({request, response}) {
