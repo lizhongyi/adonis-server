@@ -8,7 +8,21 @@ class RestController {
   // create - POST /api/:resource
   async store({request, response}) {
     const model = new this.model
-    await this.save(model, request, response)
+    let data 
+    let form
+    form = await this.formData()
+    data = request.only(Object.keys(form.result.fields))
+    model.fill(data)
+    const validation = await validate(model.$attributes, model.rules, model.messages)
+    if (validation.fails()) {
+      //return validation.messages()
+      response.status(200).json(this.restOk(true, 422,  validation.messages()[0].message))
+      return
+    }
+    const result = await model.save()
+    console.log(result)
+    response.json(this.restOk(true, 0, `created ${model.id}!`))
+    return data
   }
   
   // readMany - GET /api/:resource
@@ -90,7 +104,7 @@ class RestController {
     //see `get rules()` and `get messages()` in Model files
     model.scenario = scenario
     let messages = model.messages
-    const valid = await validate(model.attributes, model.rules, messages)
+    const valid = await validate(model.$attributes, model.rules, messages)
     if (valid.fails()) {
       response.status(422).json(valid.messages())
     }
@@ -106,7 +120,7 @@ class RestController {
     model.fill(data)
     const { validate } = use('Validator')
     const validation = await validate(data, model.rules)
-
+    console.log(mod)
     if (validation.fails()) {
       return validation.messages()
     }

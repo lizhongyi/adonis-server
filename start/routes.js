@@ -49,19 +49,25 @@ Route
 	const resources = ['posts', 'users', 'types', 'comments', 'settings', 'pages']
 
 	Route.get('/menu', `${prefix}UserController.menu`).as('menu')
-	
+	// Route
+  // .post('users', 'Admin/Api/UserController.store')
+  // .validator('StoreUser')
 	for (let k in resources) {
 		let resource = resources[k]
 		let className = inflect.classify(resource)
 		Route.get(`/${resource}/grid`, `${prefix}${className}Controller.grid`)
     Route.get(`/${resource}/form`, `${prefix}${className}Controller.form`)
     Route.get(`/${resource}/:id`, `${prefix}${className}Controller.show`)
-		Route.resource(`/${resource}/:id?`, `${prefix}${className}Controller`)
+    Route.resource(`/${resource}`, `${prefix}${className}Controller`)
+    // .validator(new Map([
+    //   [[`${resource}.store`], [`Store${className}`]],
+    //   [[`${resource}.update`], [`Update${className}`]]
+    // ]))
 	}
-
+ 
 	Route.get(`/:resource/grid`, `${prefix}RestController.grid`)
 	Route.get(`/:resource/form`, `${prefix}RestController.form`)
-	Route.resource(`/:resource`, `${prefix}RestController`)
-	
+  // Route.resource(`/:resource`, `${prefix}RestController`)
+
 }).prefix('admin/api')
 .middleware(['auth'])

@@ -17,12 +17,11 @@ class User extends Model {
   }
 
   get rules() {
-    // const id = this.attributes.id
     switch (this.scenario) {
       default:
         return {
-          // username: `required|unique:users,username,id,${id}`,
-          // nickname: `required|unique:users,nickname,id,${id}`,
+          username: `required|unique:users,username,id`,
+          nickname: `required|unique:users,nickname,id`,
           email: 'required|email|unique:users',
           password: 'required|min:6',
           password_confirmation: 'same:password'

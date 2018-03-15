@@ -1,7 +1,7 @@
 'use strict'
 const RestController = require('./RestController')
 
-const User = use('Model')
+const User = use('App/Models/User')
 
 class UserController extends RestController {
  
@@ -80,33 +80,46 @@ class UserController extends RestController {
       ],
       actions: {
         edit: true, delete: true
-      }
+      },
+      options: {
+        sort: '-id', //or '-id' as desc
+        create: false,
+        update: true,
+        delete: true
+      },
     })
   }
 
-  async formData ( request, response ) {
+  async formData (request, response) {
 
     let model = {}
     let id
     if (request) {
       id = request.input('id')
+      console.log(id)
       if (id) {
         model = await User.query().where('id', id).first()
+        console.log(model)
       }
     }
-
+   
     return this.restOk({
       
       model: model,
       open: 'window',
       fields: {
-        username: { label: t('fields.user.username'), required: true},
-        nickname: { label: t('fields.user.nickname'), required: true},
+        username: { label: t('fields.user.username'), required: true, rules: "required" },
+        nickname: { label: t('fields.user.nickname'), required: true, rules: "required"},
         avatar: {label: t('fields.user.avatar')},
-        email:  {label: t('fields.user.email')},
+        email:  {label: t('fields.user.email'),rules: "required|email"},
         password:  {label: t('fields.user.password')}
       },
-      rules: model.rules,
+      rules: {
+        username: `required`,
+        nickname: `required`,
+        email: 'required|email',
+        password: 'required|min:6'
+      },
       messages: model.messages
     })
   }
