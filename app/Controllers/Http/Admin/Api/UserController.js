@@ -108,17 +108,17 @@ class UserController extends RestController {
       model: model,
       open: 'window',
       fields: {
-        username: { label: t('fields.user.username'), required: true, rules: "required" },
-        nickname: { label: t('fields.user.nickname'), required: true, rules: "required"},
+        username: { label: t('fields.user.username'), required: true },
+        nickname: { label: t('fields.user.nickname'), required: true},
         avatar: {label: t('fields.user.avatar')},
-        email:  {label: t('fields.user.email'),rules: "required|email"},
+        email:  {label: t('fields.user.email'),},
         password:  {label: t('fields.user.password')}
       },
       rules: {
         username: `required`,
         nickname: `required`,
         email: 'required|email',
-        password: 'required|min:6'
+        password: 'required|min:6|max:10'
       },
       messages: model.messages
     })

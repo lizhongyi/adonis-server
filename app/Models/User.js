@@ -39,6 +39,7 @@ class User extends Model {
           'email.unique': '邮箱已存在，试试登录？',
           'password.required': '密码密码',
           'password.min': '密码太短啦',
+          'password.max': '密码太长',
           'password_confirmation.same': '重复密码有点问题',
           'username.required': '用户名可别忘了哦',
           'username.unique': '你来晚了，换个用户名吧',
