@@ -9,7 +9,7 @@ class User extends Model {
     // this.addHook('beforeCreate', 'User.generateUsername')
     // this.addHook('beforeCreate', 'User.generateNickname')
      this.addHook('beforeCreate', 'User.hashPassword')
-     this.addHook('beforeUpdate', 'User.generateAvatar')
+    //  this.addHook('beforeUpdate', 'User.generateAvatar')
   }
 
   static get hidden () {
@@ -17,22 +17,19 @@ class User extends Model {
   }
 
   get rules() {
-    switch (this.scenario) {
-      default:
+    const id = this.$originalAttributes.id
         return {
-          username: `required|unique:users,username,id`,
-          nickname: `required|unique:users,nickname,id`,
-          email: 'required|email|unique:users',
+          username: `required|unique:users,username,id,${id}`,
+          nickname: `required|unique:users,nickname,id,${id}`,
+          email: `required|email|unique:users,email,id,${id}`,
           password: 'required|min:6',
-          password_confirmation: 'same:password'
+          password_confirmation: 'same:password',
+          mobile: `required|unique:users,mobile,id,${id}`
         }
-    }
 
   }
 
   get messages() {
-    switch (this.scenario) {
-      default:
         return {
           'email.required': '请填写邮箱',
           'email.email': '邮箱好像不对呢',
@@ -45,9 +42,10 @@ class User extends Model {
           'username.unique': '你来晚了，换个用户名吧',
           'nickname.required': '起个霸气的昵称吧',
           'nickname.unique': '你来晚了，换个昵称吧',
-        }
-    }
-
+          'mobile.required': '手机号必填哦',
+          'mobile.phone': '手机号码不正确',
+          'mobile.unique': '手机号码已经存在'
+      }
   }
 
   static get deleteTimestamp() {

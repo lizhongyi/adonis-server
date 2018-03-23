@@ -56,7 +56,7 @@ class UserController extends RestController {
     return 'logouted'
   }
   gridData () {
-
+    console.log()
     return this.restOk({
       filters: {
         model: {
@@ -91,7 +91,7 @@ class UserController extends RestController {
   }
 
   async formData (request, response) {
-
+    const u = new User
     let model = {}
     let id
     if (request) {
@@ -112,15 +112,17 @@ class UserController extends RestController {
         nickname: { label: t('fields.user.nickname'), required: true},
         avatar: {label: t('fields.user.avatar')},
         email:  {label: t('fields.user.email'),},
-        password:  {label: t('fields.user.password')}
+        password:  {label: t('fields.user.password')},
+        mobile: {label: t('fields.user.mobile')},
       },
       rules: {
         username: `required`,
         nickname: `required`,
         email: 'required|email',
-        password: 'required|min:6|max:10'
+        password: 'required|min:6|max:10',
+        mobile: 'required|phone'
       },
-      messages: model.messages
+      messages: u.messages
     })
   }
 

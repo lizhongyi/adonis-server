@@ -59,6 +59,7 @@ Route
     Route.get(`/${resource}/form`, `${prefix}${className}Controller.form`)
     Route.get(`/${resource}/:id`, `${prefix}${className}Controller.show`)
     Route.resource(`/${resource}`, `${prefix}${className}Controller`)
+    Route.patch(`/${resource}/:id`, `${prefix}${className}Controller.update`)
     // .validator(new Map([
     //   [[`${resource}.store`], [`Store${className}`]],
     //   [[`${resource}.update`], [`Update${className}`]]
@@ -70,4 +71,4 @@ Route
   // Route.resource(`/:resource`, `${prefix}RestController`)
 
 }).prefix('admin/api')
-.middleware(['auth'])
+//.middleware(['auth'])

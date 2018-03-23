@@ -22,7 +22,6 @@ class RestController {
     const result = await model.save()
     console.log(result)
     response.json(this.restOk(true, 0, `created ${model.id}!`))
-    return data
   }
   
   // readMany - GET /api/:resource
@@ -124,6 +123,7 @@ class RestController {
     if (validation.fails()) {
       return validation.messages()
     }
+    delete model.$attributes.scenario
     const result = await model.save()
     console.log(result)
     response.json(this.restOk(true, 0, `created ${model.id}!`))
@@ -131,8 +131,26 @@ class RestController {
 
   // update - PATCH /api/:resource/:id
   async update({request, response}) {
-    const model = await this.model.findOrFail(request.param('id'))
-    await this.save(model, request, response)
+    let form, data
+    form = await this.formData()
+    data = request.only(Object.keys(form.result.fields))
+    
+    const model = await this.model.findOrFail(request.input('id'))
+    model.fill(data)
+    console.log(model)
+    const validation = await validate(model.$attributes, model.rules, model.messages)
+    if (validation.fails()) {
+      console.log(request.input('id'))
+      //return validation.messages()
+      response.status(422).json(this.restOk(true, 422,  validation.messages()[0].message))
+      return
+    }
+   
+    console.log(model.$attributes)
+    model.$attributes.id = request.input('id')
+    const result = await model.save()
+    response.json(this.restOk(true, 0, `updated ${model.id}!`) )
+
   }
 
   // delete - DELETE /api/:resource/:id
