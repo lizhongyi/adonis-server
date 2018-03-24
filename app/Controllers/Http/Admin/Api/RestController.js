@@ -137,16 +137,26 @@ class RestController {
     
     const model = await this.model.findOrFail(request.input('id'))
     model.fill(data)
-    console.log(model)
+    
     const validation = await validate(model.$attributes, model.rules, model.messages)
     if (validation.fails()) {
       console.log(request.input('id'))
       //return validation.messages()
-      response.status(422).json(this.restOk(true, 422,  validation.messages()[0].message))
+      response.status(200).json(this.restOk(true, 422,  validation.messages()[0].message))
       return
     }
-   
-    console.log(model.$attributes)
+    let same  = 0
+    for ( let key in model.$attributes) {
+      if(model.$originalAttributes[key] != model.$attributes[key]) {
+        same ++
+      }
+    }
+    
+    if(same === 0) {
+      response.json(this.restOk(true, 422, `Because there is no change！`) )
+      return
+    }
+    console.log(same+ '------------')
     model.$attributes.id = request.input('id')
     const result = await model.save()
     response.json(this.restOk(true, 0, `updated ${model.id}!`) )

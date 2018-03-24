@@ -9,6 +9,7 @@ class User extends Model {
     // this.addHook('beforeCreate', 'User.generateUsername')
     // this.addHook('beforeCreate', 'User.generateNickname')
      this.addHook('beforeCreate', 'User.hashPassword')
+     this.addHook('beforeUpdate', 'User.hashPassword')
     //  this.addHook('beforeUpdate', 'User.generateAvatar')
   }
 
@@ -18,15 +19,18 @@ class User extends Model {
 
   get rules() {
     const id = this.$originalAttributes.id
-        return {
-          username: `required|unique:users,username,id,${id}`,
-          nickname: `required|unique:users,nickname,id,${id}`,
-          email: `required|email|unique:users,email,id,${id}`,
-          password: 'required|min:6',
-          password_confirmation: 'same:password',
-          mobile: `required|unique:users,mobile,id,${id}`
-        }
-
+    let rules = {
+        username: `required|unique:users,username,id,${id}`,
+        nickname: `required|unique:users,nickname,id,${id}`,
+        email: `required|email|unique:users,email,id,${id}`,
+        password: 'required|min:6',
+        password_confirmation: 'same:password',
+        mobile: `required|unique:users,mobile,id,${id}`
+      }
+    if(id) {
+      this.$originalAttributes.password ? rules['password'] = 'min:6' : delete rules['password'] 
+    }  
+    return rules
   }
 
   get messages() {

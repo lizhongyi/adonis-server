@@ -66,6 +66,7 @@ class UserController extends RestController {
         fields: {
           depart : { label:t('fields.user.depart'), type: 'select',choices:[{text:'部门',value:1}]},
           username: { label:t('fields.user.username') },
+          nickname: { label:t('fields.user.nickname') },
           created_at: { label: t('fields.user.created_at'), type: 'date' }
         },
         rules: {},
@@ -119,7 +120,7 @@ class UserController extends RestController {
         username: `required`,
         nickname: `required`,
         email: 'required|email',
-        password: 'required|min:6|max:10',
+        password: id ? '' : 'required|min:6|max:10',
         mobile: 'required|phone'
       },
       messages: u.messages
