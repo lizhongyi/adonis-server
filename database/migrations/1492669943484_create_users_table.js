@@ -13,6 +13,7 @@ class UsersTableSchema extends Schema {
       table.string('email', 80).notNullable().unique()
       table.string('avatar', 254).nullable()
       table.string('password', 60).notNullable()
+      table.integer('sex',4).notNullable()
       table.timestamp('deleted_at').nullable()
       table.timestamps(true, true)
     })

@@ -109,12 +109,17 @@ class UserController extends RestController {
       model: model,
       open: 'window',
       fields: {
-        username: { label: t('fields.user.username'), required: true },
-        nickname: { label: t('fields.user.nickname'), required: true},
-        avatar: {label: t('fields.user.avatar')},
-        email:  {label: t('fields.user.email'),},
-        password:  {label: t('fields.user.password')},
-        mobile: {label: t('fields.user.mobile')},
+        username: { label: t('fields.user.username'), type:'text',required: true },
+        sex: { label: 'sex', type: 'radios',choices:[{text:'男',value:1},{text:'女',value:2}] },
+        interest: { label: 'Interest', type: 'checkboxes',choices:[{text:'吃饭',value:'吃饭'},{text:'唱歌',value:'唱歌'}] },
+        nickname: { label: t('fields.user.nickname'), type:'text',required: true},
+       // depart : { label:t('fields.user.depart'), type: 'select',choices:[{text:'部门',value:1}]},
+        avatar: {label: t('fields.user.avatar'),type:'text'},
+        email:  {label: t('fields.user.email'),type:'text'},
+        password:  {label: t('fields.user.password'),type:'text'},
+        mobile: {label: t('fields.user.mobile'),type:'text'},
+        created_at: { label: t('fields.user.created_at'), type: 'date' }
+        
       },
       rules: {
         username: `required`,
@@ -128,7 +133,7 @@ class UserController extends RestController {
   }
 
    menu ({ request, response }) {
-    response.send({code:0, data: {
+    return this.restOk({code:0, data: {
       1: {
         href: '/',
         title: 'Home',
@@ -156,6 +161,7 @@ class UserController extends RestController {
         items: {
           6: {
             href: '/example',
+            icon: 'add',
             title: 'Example'
           },
           7: {
