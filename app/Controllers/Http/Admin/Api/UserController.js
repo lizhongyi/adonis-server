@@ -80,11 +80,11 @@ class UserController extends RestController {
         { text: t('fields.user.created_at'), value: 'created_at', width: 180 },
       ],
       actions: {
-        edit: true, delete: true
+        edit: true, delete: true, create: true
       },
       options: {
         sort: '-id', //or '-id' as desc
-        create: false,
+        create: true,
         update: true,
         delete: true
       },
@@ -109,14 +109,14 @@ class UserController extends RestController {
       model: model,
       open: 'window',
       fields: {
-        username: { label: t('fields.user.username'), type:'text',required: true },
+        username: { label: t('fields.user.username'), type:'text',required: true, disabled: true },
         sex: { label: 'sex', type: 'radios',choices:[{text:'男',value:1},{text:'女',value:2}] },
         interest: { label: 'Interest', type: 'checkboxes',choices:[{text:'吃饭',value:'吃饭'},{text:'唱歌',value:'唱歌'}] },
         nickname: { label: t('fields.user.nickname'), type:'text',required: true},
        // depart : { label:t('fields.user.depart'), type: 'select',choices:[{text:'部门',value:1}]},
         avatar: {label: t('fields.user.avatar'),type:'text'},
         email:  {label: t('fields.user.email'),type:'text'},
-        password:  {label: t('fields.user.password'),type:'text'},
+        //password:  {label: t('fields.user.password'),type:'text'},
         mobile: {label: t('fields.user.mobile'),type:'text'},
         created_at: { label: t('fields.user.created_at'), type: 'date' }
         
@@ -125,7 +125,7 @@ class UserController extends RestController {
         username: `required`,
         nickname: `required`,
         email: 'required|email',
-        password: id ? '' : 'required|min:6|max:10',
+        //password: id ? '' : 'required|min:6|max:10',
         mobile: 'required|phone'
       },
       messages: u.messages
