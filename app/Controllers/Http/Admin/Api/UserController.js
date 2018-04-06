@@ -39,7 +39,7 @@ class UserController extends RestController {
       return
     }
 
-    response.json({
+    return this.restOk({
       user: user,
       token: token
     })
