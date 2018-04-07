@@ -56,7 +56,6 @@ class UserController extends RestController {
     return 'logouted'
   }
   gridData () {
-    console.log()
     return this.restOk({
       filters: {
         model: {
@@ -66,6 +65,7 @@ class UserController extends RestController {
         fields: {
           depart : { label:t('fields.user.depart'), type: 'select',choices:[{text:'部门',value:1}]},
           username: { label:t('fields.user.username') },
+          id: { label: 'id'},
           nickname: { label:t('fields.user.nickname') },
           created_at: { label: t('fields.user.created_at'), type: 'date' }
         },
@@ -80,13 +80,14 @@ class UserController extends RestController {
         { text: t('fields.user.created_at'), value: 'created_at', width: 180 },
       ],
       actions: {
-        edit: true, delete: true, create: true
+        edit: true, delete: true
       },
       options: {
         sort: '-id', //or '-id' as desc
         create: true,
         update: true,
-        delete: true
+        delete: true,
+        open: 'window'
       },
     })
   }
@@ -97,26 +98,26 @@ class UserController extends RestController {
     let id
     if (request) {
       id = request.input('id')
-      console.log(id)
+      let where = {}
       if (id) {
-        model = await User.query().where('id', id).first()
-        console.log(model)
+        where.id = id
       }
+      model = await User.query().where(where).first()
     }
    
     return this.restOk({
       
       model: model,
-      open: 'window',
+      open: 'page',
       fields: {
         username: { label: t('fields.user.username'), type:'text',required: true, disabled: true },
         sex: { label: 'sex', type: 'radios',choices:[{text:'男',value:1},{text:'女',value:2}] },
-        interest: { label: 'Interest', type: 'checkboxes',choices:[{text:'吃饭',value:'吃饭'},{text:'唱歌',value:'唱歌'}] },
+        interest: { label: 'Interest', type: 'checkboxes',value: [],choices:[{text:'吃饭',value:'吃饭'},{text:'唱歌',value:'唱歌'}] },
         nickname: { label: t('fields.user.nickname'), type:'text',required: true},
        // depart : { label:t('fields.user.depart'), type: 'select',choices:[{text:'部门',value:1}]},
         avatar: {label: t('fields.user.avatar'),type:'text'},
         email:  {label: t('fields.user.email'),type:'text'},
-        //password:  {label: t('fields.user.password'),type:'text'},
+        // Spassword:  {label: t('fields.user.password'),type:'text'},
         mobile: {label: t('fields.user.mobile'),type:'text'},
         created_at: { label: t('fields.user.created_at'), type: 'date' }
         

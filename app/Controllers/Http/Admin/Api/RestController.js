@@ -20,7 +20,7 @@ class RestController {
       return
     }
     const result = await model.save()
-    console.log(result)
+    // console.log(result)
     response.json(this.restOk(true, 0, `created ${model.id}!`))
   }
   
@@ -34,7 +34,7 @@ class RestController {
     // console.log(where)
     let conditions = []
     where.deleted_at = null
-    console.log(where)
+  
     let tableName = inflect.pluralize(this.resource)
     for (let k in where) {
       const v = where[k]
@@ -61,7 +61,6 @@ class RestController {
         const expandFieldName = `${inflect.singularize(expandTableName)}_id` //type_id
         // query.join(expandTableName, `${expandTableName}.id`, `${tableName}.${expandFieldName}`)
       }
-      
     }
     if (sort){
       let sortData = sort.split('-')
@@ -75,8 +74,10 @@ class RestController {
       query.orderBy(sortField, desc ? 'desc' : 'asc')
       
     }
+     console.log(request.input('page'),"===============")
+     
 
-     const  results  = await query.paginate(request.input('page', 1), request.input('per_page', 10))
+     const  results  = await query.paginate(request.input('page', 1), request.input('perPage', 10))
   
      response.json(this.restOk(results))
   }
@@ -94,7 +95,7 @@ class RestController {
     }
 
     const result = await query.first()
-    console.log('show():result', result)
+    // console.log('show():result', result)
     response.json(this.restOk(result))
   }
 
@@ -119,13 +120,12 @@ class RestController {
     model.fill(data)
     const { validate } = use('Validator')
     const validation = await validate(data, model.rules)
-    console.log(mod)
     if (validation.fails()) {
       return validation.messages()
     }
     delete model.$attributes.scenario
     const result = await model.save()
-    console.log(result)
+  
     response.json(this.restOk(true, 0, `created ${model.id}!`))
   }
 
@@ -156,7 +156,7 @@ class RestController {
       response.json(this.restOk(true, 422, `Because there is no change！`) )
       return
     }
-    console.log(same+ '------------')
+    
     model.$attributes.id = request.input('id')
     const result = await model.save()
     response.json(this.restOk(true, 0, `updated ${model.id}!`) )
@@ -166,7 +166,7 @@ class RestController {
   // delete - DELETE /api/:resource/:id
   async destroy({request, response}) {
     const model = this.model
-    console.log(request.params.id)
+
     const record = await model.find(request.params.id)
     // const result = await record.delete()
     const result = await model
