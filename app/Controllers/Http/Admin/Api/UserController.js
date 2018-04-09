@@ -87,7 +87,7 @@ class UserController extends RestController {
         create: true,
         update: true,
         delete: true,
-        open: 'window'
+        open: 'page'
       },
     })
   }
@@ -140,39 +140,39 @@ class UserController extends RestController {
         title: 'Home',
         icon: 'home'
       },
-      2: {
-        href: '/crud/posts',
-        title: 'Posts',
-        icon: 'view_list'
-      },
-      3: {
-        href: '/crud/posts/create',
-        title: 'Create Post',
-        icon: 'note_add'
-      },
+      // 2: {
+      //   href: '/crud/posts',
+      //   title: 'Posts',
+      //   icon: 'view_list'
+      // },
+      // 3: {
+      //   href: '/crud/posts/create',
+      //   title: 'Create Post',
+      //   icon: 'note_add'
+      // },
       4: {
         href: '/crud/users',
         title: 'Users',
         icon: 'people'
       },
-      5: {
+      // 5: {
 
-        title: 'Pages',
-        icon: 'domain',
-        items: {
-          6: {
-            href: '/example',
-            icon: 'add',
-            title: 'Example'
-          },
-          7: {
-            href: '/about',
-            title: 'About'
-          },
+      //   title: 'Pages',
+      //   icon: 'domain',
+      //   items: {
+      //     6: {
+      //       href: '/example',
+      //       icon: 'add',
+      //       title: 'Example'
+      //     },
+      //     7: {
+      //       href: '/about',
+      //       title: 'About'
+      //     },
           
 
-        }
-      },
+      //   }
+      // },
       8: {
         href: '/login',
         icon: 'lock',

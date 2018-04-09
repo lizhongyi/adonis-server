@@ -12,6 +12,7 @@ class RestController {
     let form
     form = await this.formData()
     data = request.only(Object.keys(form.result.fields))
+    data = this.filterData(data)
     model.fill(data)
     const validation = await validate(model.$attributes, model.rules, model.messages)
     if (validation.fails()) {
@@ -136,6 +137,7 @@ class RestController {
     data = request.only(Object.keys(form.result.fields))
     
     const model = await this.model.findOrFail(request.input('id'))
+    data = this.filterData(data)
     model.fill(data)
     
     const validation = await validate(model.$attributes, model.rules, model.messages)
@@ -241,6 +243,14 @@ class RestController {
       messages: messages,
       result: json
     }
+  }
+  filterData(data) {
+    for (let index in data) {
+      if (Object.prototype.toString.call(data[index]) === '[object Array]') {
+        data[index] = data[index].toString()
+      }
+    }
+    return data
   }
 }
 

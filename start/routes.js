@@ -71,4 +71,4 @@ Route
   // Route.resource(`/:resource`, `${prefix}RestController`)
 
 }).prefix('admin/api')
-//.middleware(['auth'])
+.middleware(['auth'])
