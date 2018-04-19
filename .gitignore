@@ -5,8 +5,9 @@ node_modules
 tmp
 
 # Environment variables, never commit this file
+.env-example
 .env
-
+*.sql
 # Lock files
 package-lock.json
 yarn.lock

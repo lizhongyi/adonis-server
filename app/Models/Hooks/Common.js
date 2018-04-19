@@ -2,10 +2,8 @@
 
 const Common = exports = module.exports = {}
 
-Common.fillUserId = function async (next) {
+Common.fillUserId = async function (next) {
   // {this} belongs to model instance
-  if (!this.user_id) {
-    this.user_id = authUserId
-  }
-  await next
+    next.user_id =  authUserId
+    await next
 }

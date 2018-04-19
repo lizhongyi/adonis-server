@@ -9,6 +9,7 @@ class User extends Model {
     // this.addHook('beforeCreate', 'User.generateUsername')
     // this.addHook('beforeCreate', 'User.generateNickname')
      this.addHook('beforeCreate', 'User.hashPassword')
+     this.addHook('beforeCreate', 'User.CreateUid')
      this.addHook('beforeUpdate', 'User.hashPassword')
     //  this.addHook('beforeUpdate', 'User.generateAvatar')
   }

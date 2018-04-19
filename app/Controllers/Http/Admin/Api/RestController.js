@@ -5,28 +5,8 @@ const { validate } = use('Validator')
 // class RestfulController {
 class RestController {
 
-  // create - POST /api/:resource
-  async store({request, response}) {
-    const model = new this.model
-    let data 
-    let form
-    form = await this.formData()
-    data = request.only(Object.keys(form.result.fields))
-    data = this.filterData(data)
-    model.fill(data)
-    const validation = await validate(model.$attributes, model.rules, model.messages)
-    if (validation.fails()) {
-      //return validation.messages()
-      response.status(200).json(this.restOk(true, 422,  validation.messages()[0].message))
-      return
-    }
-    const result = await model.save()
-    // console.log(result)
-    response.json(this.restOk(true, 0, `created ${model.id}!`))
-  }
-  
   // readMany - GET /api/:resource
-  async index({request, response}) {
+  async index({request, response, auth}) {
     const model = this.model
     let query = model.query()
     let where = JSON.parse(request.input('query'))
@@ -251,6 +231,30 @@ class RestController {
       }
     }
     return data
+  }
+
+  
+  async store({request, response, auth}) {
+    
+    const model = new this.model
+    let data 
+    let form
+    form = await this.formData()
+    data = request.only(Object.keys(form.result.fields))
+    data = this.filterData(data)
+    model.fill(data)
+    this.sortField
+    const validation = await validate(model.$attributes, model.rules, model.messages)
+  
+    if (validation.fails()) {
+      response.status(200).json(this.restOk(true, 422,  validation.messages()[0].message))
+      return
+    }
+
+    //return
+    const result = await model.save()
+    // console.log(result)
+    response.json(this.restOk(true, 0, `created ${model.id}!`))
   }
 }
 

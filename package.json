@@ -30,6 +30,7 @@
     "Validator": "^1.0.5",
     "adonis-antl": "^1.0.5",
     "i": "^0.3.6",
+    "mariasql": "^0.2.6",
     "mysql": "^2.15.0"
   },
   "devDependencies": {},

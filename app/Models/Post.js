@@ -6,20 +6,20 @@ class Post extends Model{
     super.boot()
 
       // this.addHook('beforeUpdate', 'Common.fillUserId')
-      this.addHook('beforeCreate', 'Common.fillUserId')
+      // this.addHook('beforeCreate', 'Common.fillUserId')
 
   }
-
-  static rules (post) {
+    rules () {
+      const id = this.$originalAttributes.id
       return {
         type_id: 'required',
         title:`required`,
-//        title:`required|unique:posts,title,title,${post.title}`,
+        title:`required|unique:posts,title,title,${id}`,
         body:'required'
       }
   }
 
-  static get messages () {
+    get messages () {
     return {
       'type_id.required': '类别要选一个哦',
       'title.required': '标题哪能忘记呢',
@@ -37,10 +37,6 @@ class Post extends Model{
 
   static get deleteTimestamp () {
     return 'deleted_at'
-  }
-
-  static get hidden () {
-    return ['password']
   }
 
   tags () {

@@ -15,6 +15,7 @@ class PostController extends RestController {
   }
 
   async gridData() {
+    // get tags list
 
     return this.restOk({
       
@@ -35,26 +36,35 @@ class PostController extends RestController {
         { text: 'ID', value: 'id' },
         { text: '标题', value: 'title', left: true },
         { text: '类别', value: 'type.name', width: 100, sortable: false  },
+        { text: '作者', value: 'user_id', width: 180 },
         { text: '创建时间', value: 'created_at', width: 180 },
         
       ],
-      actions: true
+      actions: {
+        edit: true, delete: true
+      },
+      options: {
+        sort: '-id', //or '-id' as desc
+        create: true,
+        update: true,
+        delete: true,
+        open: 'window'
+      },
     })
   }
 
   async formData (request, response) {
 
-    let model = {
-      title: '',
-      type_id: null,
-      body: '',
-    }
+    const post = new Post
+    let model = {}
     let id
     if (request) {
       id = request.input('id')
+      let where = {}
       if (id) {
-        model = await Post.query().where('id', id).first()
+        where.id = id
       }
+      model = await Post.query().where(where).first()
     }
 
     let typeOptions = await Type.query().select('id','name').fetch()
@@ -63,18 +73,34 @@ class PostController extends RestController {
         type.text = type.name
         type.value = type.id
     }
+    console.log(typeOptions)
     return this.restOk({
       model: model,
+      open:'window',
       fields: {
-        title: { label: '标题', hint: '标题必须填写', required: true},
+        title: { label: '标题', hint: '标题必须填写', type:'text'},
         type_id: {
-          label: '类别', type: 'select', options: typeOptions, required: true,
+          label: '类别', type: 'select', options: typeOptions,
         },
-        body: { label: '内容', type: 'html' ,required: true},
+        body: { label: '内容', type: 'text' ,required: true},
       },
-      rules: model.rules,
-      messages: model.messages
+      rules: {
+        title: `required`,
+        type_id: `required`,
+        body: `required`
+      },
+      messages: post.messages
     })
+  }
+
+  async getType () {
+    let typeOptions = await Type.query().select('id','name').fetch()
+    typeOptions = typeOptions.toJSON()
+    for (let type of typeOptions) {
+        type.text = type.name
+        type.value = type.id
+    }
+    return typeOptions
   }
 }
 

@@ -66,6 +66,7 @@ class UserController extends RestController {
           depart : { label:t('fields.user.depart'), type: 'select',choices:[{text:'部门',value:1}]},
           username: { label:t('fields.user.username') },
           id: { label: 'id'},
+          create_uid: { label: 'create_uid'},
           nickname: { label:t('fields.user.nickname') },
           created_at: { label: t('fields.user.created_at'), type: 'date' }
         },
@@ -87,7 +88,7 @@ class UserController extends RestController {
         create: true,
         update: true,
         delete: true,
-        open: 'page'
+        open: 'window'
       },
     })
   }
@@ -104,7 +105,7 @@ class UserController extends RestController {
       }
       model = await User.query().where(where).first()
     }
-   
+    console.log(u.messages)
     return this.restOk({
       
       model: model,
@@ -117,7 +118,7 @@ class UserController extends RestController {
        // depart : { label:t('fields.user.depart'), type: 'select',choices:[{text:'部门',value:1}]},
         avatar: {label: t('fields.user.avatar'),type:'text'},
         email:  {label: t('fields.user.email'),type:'text'},
-        // Spassword:  {label: t('fields.user.password'),type:'text'},
+        password:  {label: t('fields.user.password'),type:'text'},
         mobile: {label: t('fields.user.mobile'),type:'text'},
         created_at: { label: t('fields.user.created_at'), type: 'date' }
         
@@ -133,46 +134,42 @@ class UserController extends RestController {
     })
   }
 
-   menu ({ request, response }) {
+   menu ({ request, response}) {
+  
     return this.restOk({code:0, data: {
       1: {
         href: '/',
         title: 'Home',
         icon: 'home'
       },
-      // 2: {
-      //   href: '/crud/posts',
-      //   title: 'Posts',
-      //   icon: 'view_list'
-      // },
-      // 3: {
-      //   href: '/crud/posts/create',
-      //   title: 'Create Post',
-      //   icon: 'note_add'
-      // },
+      2: {
+        href: '/crud/posts',
+        title: 'Posts',
+        icon: 'view_list'
+      },
       4: {
         href: '/crud/users',
         title: 'Users',
         icon: 'people'
       },
-      // 5: {
+      5: {
 
-      //   title: 'Pages',
-      //   icon: 'domain',
-      //   items: {
-      //     6: {
-      //       href: '/example',
-      //       icon: 'add',
-      //       title: 'Example'
-      //     },
-      //     7: {
-      //       href: '/about',
-      //       title: 'About'
-      //     },
+        title: 'Pages',
+        icon: 'domain',
+        items: {
+          6: {
+            href: '/example',
+            icon: 'add',
+            title: 'Example'
+          },
+          7: {
+            href: '/about',
+            title: 'About'
+          },
           
 
-      //   }
-      // },
+        }
+      },
       8: {
         href: '/login',
         icon: 'lock',
