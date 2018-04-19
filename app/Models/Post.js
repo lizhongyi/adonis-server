@@ -6,7 +6,7 @@ class Post extends Model{
     super.boot()
 
       // this.addHook('beforeUpdate', 'Common.fillUserId')
-      // this.addHook('beforeCreate', 'Common.fillUserId')
+      this.addHook('beforeCreate', 'Common.fillUserId')
 
   }
     rules () {
