@@ -171,6 +171,11 @@ class UserController extends RestController {
         }
       },
       8: {
+        href: '/settings',
+        icon: 'settings',
+        title: 'Setting'
+      },
+      9: {
         href: '/login',
         icon: 'lock',
         title: 'Logout'

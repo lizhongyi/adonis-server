@@ -38,6 +38,7 @@ Route.get('/lo', 'UserController.index')
   .middleware(['auth'])
 
 Route.post('admin/api/login', 'Admin/Api/UserController.login')
+
 Route.get('/logout', 'UserController.logout')
 
 Route
@@ -71,4 +72,4 @@ Route
   // Route.resource(`/:resource`, `${prefix}RestController`)
 
 }).prefix('admin/api')
-.middleware(['auth'])
+// .middleware(['auth'])

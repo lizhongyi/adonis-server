@@ -1,8 +1,8 @@
 'use strict'
 
-const Lucid = use('Lucid')
+const Model = use("Model")
 
-class Setting extends Lucid {
+class Setting extends Model {
 
 }
 

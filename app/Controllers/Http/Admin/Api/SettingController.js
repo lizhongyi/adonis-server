@@ -23,12 +23,12 @@ class SettingController  {
   }
 
   // update - PATCH /api/:resource/:id
-  async update(request, response) {
+  async update({ request, response }) {
     const model = await this.model.findOrFail(request.param('id'))
     await this.save(model, request, response)
   }
 
-  async form (request, response) {
+  async form ({ request, response }) {
     let rs = await this.model.all()
     let model = {} //or `code`, `name`
     let fields = {}
